@@ -37,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="..\..\.github\workflows\docker.dependencies.yml" Link="docker-compose\docker.dependencies.yml" />
+    <EmbeddedResource Include="..\..\.github\workflows\docker\docker.dependencies.yml" Link="docker-compose\docker.dependencies.yml" />
   </ItemGroup>
 
   <ItemGroup>

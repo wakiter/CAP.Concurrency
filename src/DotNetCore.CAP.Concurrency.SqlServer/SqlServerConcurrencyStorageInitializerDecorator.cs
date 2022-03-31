@@ -33,6 +33,8 @@ namespace DotNetCore.CAP.Concurrency.SqlServer
                 return;
             }
 
+            await _inner.InitializeAsync(cancellationToken);
+
             _logger.LogDebug("Ensuring all messages in flight database tables script are applied...");
 
             var sql = CreateDbTablesScript(_options.Schema, _options.MessagesReceivedInFlightStorageName, _inner.GetReceivedTableName());
@@ -40,8 +42,6 @@ namespace DotNetCore.CAP.Concurrency.SqlServer
             connection.ExecuteNonQuery(sql);
 
             _logger.LogDebug("Ensured all messages in flight database tables script are applied.");
-
-            await _inner.InitializeAsync(cancellationToken);
         }
 
         public string GetPublishedTableName()

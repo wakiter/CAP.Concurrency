@@ -6,7 +6,7 @@ namespace DotNetCore.CAP.Concurrency
     public static class ServiceCollectionExtensions
     {
         internal static IServiceCollection AddMultiInstanceConcurrencyCommons(
-            this IServiceCollection serviceCollection, 
+            this IServiceCollection serviceCollection,
             ConcurrencyOptions options)
         {
             serviceCollection.TryAddSingleton(options);

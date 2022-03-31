@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.7.2-management-alpine
+    ports:
+        - "5672:5672"
+  
+  sql:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: Password!
+    ports:
+        - "1433:1433"

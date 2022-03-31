@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 
 namespace DotNetCore.CAP.Concurrency.SqlServer.Tests.Integration;
 
-public class EventConsumer : ICapSubscribe
+public class MessageConsumer : ICapSubscribe
 {
+    public const string Group = "Consumer_Message";
     public readonly Dictionary<Guid, int> ReceivedEvents = new();
     private readonly object _synchronisationObject = new object();
 
-    [CapSubscribe("Consumer_Event")]
-    public Task Consume(Event ev)
+    [CapSubscribe(Group)]
+    public Task Consume(Message ev)
     {
         int invocationCount;
         lock (_synchronisationObject)
@@ -25,12 +26,5 @@ public class EventConsumer : ICapSubscribe
         }
 
         return Task.CompletedTask;
-
-        //if (invocationCount == 4)
-        //{
-        //    return Task.CompletedTask;
-        //}
-
-        //throw null;
     }
 }

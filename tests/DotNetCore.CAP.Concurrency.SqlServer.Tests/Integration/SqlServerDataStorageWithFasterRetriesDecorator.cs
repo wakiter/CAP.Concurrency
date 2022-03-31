@@ -52,7 +52,7 @@ internal sealed class SqlServerDataStorageWithFasterRetriesDecorator : IDataStor
         return _inner.ChangeReceiveStateAsync(message, state);
     }
 
-    public MediumMessage StoreMessage(string name, Message content, object? dbTransaction = null)
+    public MediumMessage StoreMessage(string name, Messages.Message content, object? dbTransaction = null)
     {
         return _inner.StoreMessage(name, content, dbTransaction);
     }
@@ -62,7 +62,7 @@ internal sealed class SqlServerDataStorageWithFasterRetriesDecorator : IDataStor
         _inner.StoreReceivedExceptionMessage(name, @group, content);
     }
 
-    public MediumMessage StoreReceivedMessage(string name, string @group, Message content)
+    public MediumMessage StoreReceivedMessage(string name, string @group, Messages.Message content)
     {
         return _inner.StoreReceivedMessage(name, @group, content);
     }
@@ -130,8 +130,8 @@ internal sealed class SqlServerDataStorageWithFasterRetriesDecorator : IDataStor
     }
 
     private static T ExecuteReader<T>(
-        IDbConnection connection, 
-        string sql, 
+        IDbConnection connection,
+        string sql,
         Func<IDataReader, T>? readerFunc,
         params object[] sqlParams)
     {

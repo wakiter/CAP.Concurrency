@@ -35,4 +35,16 @@ namespace DotNetCore.CAP.Concurrency.SqlServer
             return serviceCollection;
         }
     }
+
+    public static class CapOptionsExtensions
+    {
+        public static CapOptions UseSqlMultiInstanceConcurrency(
+            this CapOptions capOptions,
+            Action<SqlServerConcurrencyOptions>? cfg = null)
+        {
+            capOptions.RegisterExtension(new SqlMultiInstanceConcurrencyOptions(cfg));
+
+            return capOptions;
+        }
+    }
 }

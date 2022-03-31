@@ -6,14 +6,14 @@ namespace DotNetCore.CAP.Concurrency.SqlServer.Tests.Integration
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection RegisterCAPCommons(this IServiceCollection serviceCollection, int failedRetryInterval, int inFlightTimeInSeconds, bool registerMultiInstanceConcurrency = true)
+        public static IServiceCollection RegisterCapCommons(this IServiceCollection serviceCollection, int failedRetryInterval, int inFlightTimeInSeconds, bool registerMultiInstanceConcurrency, string connectionString)
         {
             serviceCollection.AddLogging(x => x.AddConsole());
             serviceCollection.AddCap(capCfg =>
             {
                 capCfg.UseSqlServer(cfg =>
                 {
-                    cfg.ConnectionString = AppDbContext.ConnectionString;
+                    cfg.ConnectionString = connectionString;
                 });
 
                 capCfg.UseRabbitMQ(x =>
@@ -24,17 +24,25 @@ namespace DotNetCore.CAP.Concurrency.SqlServer.Tests.Integration
                     x.ExchangeName = "wakiter";
                     x.VirtualHost = "/";
                 });
-                
+
                 capCfg.FailedRetryInterval = failedRetryInterval;
                 capCfg.UseEntityFramework<AppDbContext>();
-            });
-            
-            serviceCollection.AddTransient<AppDbContext>();
 
-            if (registerMultiInstanceConcurrency)
-            {
-                serviceCollection.AddMultiInstanceConcurrency(cfg => cfg.InFlightTime = TimeSpan.FromSeconds(inFlightTimeInSeconds));
-            }
+                if (registerMultiInstanceConcurrency)
+                {
+                    capCfg.UseSqlMultiInstanceConcurrency(cfg => cfg.InFlightTime = TimeSpan.FromSeconds(inFlightTimeInSeconds));
+                }
+            });
+
+            serviceCollection.AddTransient<AppDbContext>();
+            serviceCollection.AddSingleton<DatabaseSettingsStorage>();
+            serviceCollection.AddSingleton<IKeepDatabaseSettings>(sp => sp.GetRequiredService<DatabaseSettingsStorage>());
+            serviceCollection.AddSingleton<IStoreDatabaseSettings>(sp => sp.GetRequiredService<DatabaseSettingsStorage>());
+
+            //if (registerMultiInstanceConcurrency)
+            //{
+            //    serviceCollection.AddMultiInstanceConcurrency(cfg => cfg.InFlightTime = TimeSpan.FromSeconds(inFlightTimeInSeconds));
+            //}
 
             return serviceCollection;
         }

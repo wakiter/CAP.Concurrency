@@ -5,8 +5,8 @@ namespace DotNetCore.CAP.Concurrency.SqlServer
     internal static class DbConnectionExtensions
     {
         public static int ExecuteNonQuery(
-            this IDbConnection connection, 
-            string sql, 
+            this IDbConnection connection,
+            string sql,
             IDbTransaction? transaction = null,
             params object[] sqlParams)
         {

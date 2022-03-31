@@ -1,0 +1,31 @@
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    # - name: Build
+      # run: dotnet build --configuration Release
+    # - name: su
+      # run: sudo su - root
+    # - name: chmod
+      # run: sudo chmod -R 666 src/ && sudo chmod -R 666 tests/
+    # - name: net6
+      # run: sudo apt-get update; sudo apt-get install -y apt-transport-https && sudo apt-get update && sudo apt-get install -y dotnet-sdk-6.0
+    # - name: Build
+      # run: sudo dotnet build --configuration Release
+    - name: ls
+      run: ls -alh
+    - name: Start Rabbit & MSSQL
+      run: sudo docker-compose -f .github/workflows/docker.dependencies.yml up
+    # - name: Test
+      # run: dotnet test --configuration Release --no-build

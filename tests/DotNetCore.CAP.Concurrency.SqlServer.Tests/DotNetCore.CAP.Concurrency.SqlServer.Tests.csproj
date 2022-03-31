@@ -11,6 +11,7 @@
     <PackageReference Include="DotNetCore.CAP" Version="6.0.0" />
     <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="6.0.0" />
     <PackageReference Include="DotNetCore.CAP.SqlServer" Version="6.0.0" />
+    <PackageReference Include="Ductus.FluentDocker.XUnit" Version="2.10.45" />
     <PackageReference Include="FluentAssertions" Version="6.5.1" />
     <PackageReference Include="MartinCostello.Logging.XUnit" Version="0.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
@@ -30,7 +31,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="docker-compose\" />
+    <Folder Include="Extensions\" />
     <Folder Include="Unit\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\.github\workflows\docker.dependencies.yml" Link="docker-compose\docker.dependencies.yml" />
   </ItemGroup>
 
   <ItemGroup>
